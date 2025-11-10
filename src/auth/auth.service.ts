@@ -36,7 +36,7 @@ export class AuthService {
         if (error.code === 'P2002') {
           throw new ConflictException('Email already exists!');
         }
-        throw new Error(error.message);
+        throw error;
       } else {
         throw error;
       }
