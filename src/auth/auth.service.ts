@@ -14,14 +14,6 @@ export class AuthService {
 
   async register(dto: AuthDto) {
     try {
-      const testUser = await this.prisma.user.findUnique({
-        where: {
-          email: dto.email,
-        },
-      });
-      if (testUser) {
-        throw new ConflictException('User already exists');
-      }
       const hash = await argon.hash(dto.password);
       const user = await this.prisma.user.create({
         data: {
@@ -41,6 +33,9 @@ export class AuthService {
       };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new ConflictException('Email already exists!');
+        }
         throw new Error(error.message);
       } else {
         throw error;
@@ -64,7 +59,6 @@ export class AuthService {
       if (!isPasswordValid)
         throw new UnauthorizedException('Invalid credentials!');
       return {
-        id: foundUser.id,
         userId: foundUser.userId,
         email: foundUser.email,
         firstName: foundUser.firstName,
