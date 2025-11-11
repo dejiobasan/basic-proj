@@ -77,14 +77,9 @@ export class AuthService {
       if (!isPasswordValid)
         throw new UnauthorizedException('Invalid credentials!');
 
-      const accessToken = await this.signToken(
-        foundUser.userId,
-        foundUser.email,
-      );
-      const refreshToken = await this.signToken(
-        foundUser.userId,
-        foundUser.email,
-      );
+      const tokens = await this.signToken(foundUser.userId, foundUser.email);
+      const accessToken = tokens.access_token;
+      const refreshToken = tokens.refresh_token;
 
       res.cookie('access_token', accessToken, {
         httpOnly: true,
@@ -105,8 +100,8 @@ export class AuthService {
         firstName: foundUser.firstName,
         lastName: foundUser.lastName,
         phoneNumber: foundUser.phoneNumber,
-        ...accessToken,
-        ...refreshToken,
+        accessToken,
+        refreshToken,
       };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {

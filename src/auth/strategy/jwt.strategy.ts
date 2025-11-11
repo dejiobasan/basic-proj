@@ -12,6 +12,10 @@ interface AuthCookies {
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly prisma: PrismaService) {
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      throw new Error('JWT_SECRET environment variable is not set');
+    }
     super({
       jwtFromRequest: (req: Request) => {
         if (req && req.cookies) {
@@ -20,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         }
         return null;
       },
-      secretOrKey: process.env.JWT_SECRET!,
+      secretOrKey: secret,
     });
   }
 
