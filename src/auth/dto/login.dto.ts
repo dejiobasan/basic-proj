@@ -19,7 +19,7 @@ export class LoginResponseDto {
   @ApiProperty()
   statusCode: number;
   @ApiProperty()
-  messasge: string;
+  message: string;
   @ApiProperty({
     description: 'User data',
     example: {

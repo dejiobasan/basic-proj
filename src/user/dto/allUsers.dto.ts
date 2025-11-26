@@ -46,7 +46,7 @@ export class PaginatedUsersResponseDto {
   @ApiProperty()
   statusCode: number;
   @ApiProperty()
-  messasge: string;
+  message: string;
   @ApiProperty({
     description: 'User data',
     example: {
@@ -73,7 +73,7 @@ export class PaginatedUsersResponseDto {
   timestamp: string;
 }
 
-export class userResponseDto {
+export class UserResponseDto {
   @ApiProperty()
   success: boolean;
   @ApiProperty()
