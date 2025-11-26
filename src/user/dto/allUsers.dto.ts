@@ -41,15 +41,62 @@ export class UserListItemDto {
 }
 
 export class PaginatedUsersResponseDto {
-  @ApiProperty({ type: [UserListItemDto] })
-  users: UserListItemDto[];
+  @ApiProperty()
+  success: boolean;
+  @ApiProperty()
+  statusCode: number;
+  @ApiProperty()
+  messasge: string;
+  @ApiProperty({
+    description: 'User data',
+    example: {
+      users: [
+        {
+          firstName: 'John',
+          lastName: 'Doe',
+          email: 'john.doe@example.com',
+          phoneNumber: '+1234567890',
+        },
+      ],
+      currentPage: 1,
+      totalPages: 1,
+      totalUsers: 1,
+    },
+  })
+  data: {
+    users: UserListItemDto[];
+    currentPage: number;
+    totalPages: number;
+    totalUsers: number;
+  };
+  @ApiProperty()
+  timestamp: string;
+}
 
-  @ApiProperty({ example: 1 })
-  currentPage: number;
-
-  @ApiProperty({ example: 10 })
-  totalPages: number;
-
-  @ApiProperty({ example: 20 })
-  totalUsers: number;
+export class userResponseDto {
+  @ApiProperty()
+  success: boolean;
+  @ApiProperty()
+  statusCode: number;
+  @ApiProperty()
+  messasge: string;
+  @ApiProperty({
+    description: 'User data',
+    example: {
+      userId: '12345678-1234-1234-1234-123456789012',
+      email: 'john.doe@example.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      phoneNumber: '+1234567890',
+    },
+  })
+  data: {
+    userId: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+  };
+  @ApiProperty()
+  timestamp: string;
 }

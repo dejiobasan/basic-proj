@@ -43,11 +43,14 @@ export class AuthService {
         },
       });
       return {
-        userId: user.userId,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        phoneNumber: user.phoneNumber,
+        message: 'User created successfully',
+        data: {
+          userId: user.userId,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          phoneNumber: user.phoneNumber,
+        },
       };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
@@ -95,13 +98,16 @@ export class AuthService {
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       return {
-        userId: foundUser.userId,
-        email: foundUser.email,
-        firstName: foundUser.firstName,
-        lastName: foundUser.lastName,
-        phoneNumber: foundUser.phoneNumber,
-        accessToken,
-        refreshToken,
+        message: 'Login successful',
+        data: {
+          userId: foundUser.userId,
+          email: foundUser.email,
+          firstName: foundUser.firstName,
+          lastName: foundUser.lastName,
+          phoneNumber: foundUser.phoneNumber,
+          accessToken,
+          refreshToken,
+        },
       };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
@@ -161,7 +167,9 @@ export class AuthService {
 
       return {
         message: 'Access token refreshed successfully',
-        access_token,
+        data: {
+          access_token,
+        },
       };
     } catch (error) {
       console.log(error);

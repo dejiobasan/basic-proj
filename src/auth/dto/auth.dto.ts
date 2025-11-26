@@ -43,13 +43,59 @@ export class AuthDto {
 
 export class AuthResponseDto {
   @ApiProperty()
-  userId: string;
+  success: boolean;
   @ApiProperty()
-  email: string;
+  statusCode: number;
   @ApiProperty()
-  firstName: string;
+  message: string;
+  @ApiProperty({
+    description: 'User data',
+    example: {
+      userId: '12345678-1234-1234-1234-123456789012',
+      email: 'john.doe@example.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      phoneNumber: '+1234567890',
+    },
+  })
+  data: {
+    userId: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+  };
   @ApiProperty()
-  lastName: string;
+  timestamp: string;
+}
+
+export class DefaultResponseDto {
   @ApiProperty()
-  phoneNumber: string;
+  success: boolean;
+  @ApiProperty()
+  statusCode: number;
+  @ApiProperty()
+  message: string;
+  @ApiProperty()
+  timestamp: string;
+}
+
+export class RefreshResponseDto {
+  @ApiProperty()
+  success: boolean;
+  @ApiProperty()
+  statusCode: number;
+  @ApiProperty()
+  message: string;
+  @ApiProperty({
+    description: 'Access Token',
+    example: {
+      access_token: 'sdbjhisj',
+    },
+  })
+  data: {
+    access_token: string;
+  };
+  @ApiProperty()
+  timestamp: string;
 }
