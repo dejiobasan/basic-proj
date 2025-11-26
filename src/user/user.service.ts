@@ -50,10 +50,13 @@ export class UserService {
     const totalPages = Math.ceil(totalUsers / limit);
 
     return {
-      users,
-      currentPage: page,
-      totalPages,
-      totalUsers,
+      message: 'Users fetched successfully',
+      data: {
+        users,
+        currentPage: page,
+        totalPages,
+        totalUsers,
+      },
     };
   }
 }

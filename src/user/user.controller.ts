@@ -4,6 +4,7 @@ import { JwtGuard } from 'src/auth/guard';
 import {
   GetUsersQueryDto,
   PaginatedUsersResponseDto,
+  UserResponseDto,
 } from './dto/allUsers.dto';
 import { UserService } from './user.service';
 
@@ -20,6 +21,10 @@ export class UserController {
 
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
+  @ApiOkResponse({
+    description: 'User data',
+    type: UserResponseDto,
+  })
   @Get('me')
   getMe(@Req() req: Request & { user: JwtPayload }) {
     return req.user;
