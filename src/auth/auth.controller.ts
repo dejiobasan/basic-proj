@@ -5,8 +5,8 @@ import {
   AuthResponseDto,
   LoginDto,
   LoginResponseDto,
-  DefaultResponseDto,
   RefreshResponseDto,
+  LogoutResponseDto,
 } from './dto';
 import { ErrorResponseDto } from 'src/common/dtos/errorRes.dto';
 import { Response, Request } from 'express';
@@ -50,13 +50,13 @@ export class AuthController {
   @Post('logout')
   @ApiOkResponse({
     description: 'User successfully logged out',
-    type: DefaultResponseDto,
+    type: LogoutResponseDto,
   })
   @ApiResponse({ status: 400, type: ErrorResponseDto })
   @ApiResponse({ status: 401, type: ErrorResponseDto })
   @ApiResponse({ status: 500, type: ErrorResponseDto })
   @ApiBearerAuth()
-  logout(@Res() res: Response) {
+  logout(@Res({ passthrough: true }) res: Response) {
     return this.authService.logout(res);
   }
 

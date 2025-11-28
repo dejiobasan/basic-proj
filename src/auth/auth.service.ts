@@ -1,7 +1,6 @@
 import {
   ConflictException,
   Injectable,
-  Res,
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -83,14 +82,12 @@ export class AuthService {
       const tokens = await this.signToken(foundUser.userId, foundUser.email);
       const accessToken = tokens.access_token;
       const refreshToken = tokens.refresh_token;
-
       res.cookie('access_token', accessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         maxAge: 15 * 60 * 1000,
       });
-
       res.cookie('refresh_token', refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -118,10 +115,13 @@ export class AuthService {
     }
   }
 
-  logout(@Res() res: Response) {
+  logout(res: Response) {
     res.clearCookie('access_token');
     res.clearCookie('refresh_token');
-    return { message: 'Logged out successfully' };
+    return {
+      message: 'Logout successful',
+      data: null,
+    };
   }
 
   async signToken(
@@ -156,6 +156,14 @@ export class AuthService {
         secret: process.env.REFRESH_SECRET,
       });
 
+      const foundUser = await this.prisma.user.findUnique({
+        where: {
+          email: payload.email,
+        },
+      });
+
+      if (!foundUser) throw new UnauthorizedException('User not found');
+
       const { access_token } = await this.signToken(payload.sub, payload.email);
 
       res.cookie('access_token', access_token, {
@@ -169,6 +177,11 @@ export class AuthService {
         message: 'Access token refreshed successfully',
         data: {
           access_token,
+          userId: foundUser.userId,
+          email: foundUser.email,
+          firstName: foundUser.firstName,
+          lastName: foundUser.lastName,
+          phoneNumber: foundUser.phoneNumber,
         },
       };
     } catch (error) {
