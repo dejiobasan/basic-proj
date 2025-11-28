@@ -80,6 +80,19 @@ export class DefaultResponseDto {
   timestamp: string;
 }
 
+export class LogoutResponseDto {
+  @ApiProperty()
+  success: boolean;
+  @ApiProperty()
+  statusCode: number;
+  @ApiProperty()
+  message: string;
+  @ApiProperty()
+  timestamp: string;
+  @ApiProperty()
+  data: string;
+}
+
 export class RefreshResponseDto {
   @ApiProperty()
   success: boolean;
@@ -95,6 +108,11 @@ export class RefreshResponseDto {
   })
   data: {
     access_token: string;
+    userId: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
   };
   @ApiProperty()
   timestamp: string;
