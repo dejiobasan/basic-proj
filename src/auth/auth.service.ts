@@ -1,7 +1,6 @@
 import {
   ConflictException,
   Injectable,
-  Res,
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -116,10 +115,13 @@ export class AuthService {
     }
   }
 
-  logout(@Res() res: Response) {
+  logout(res: Response) {
     res.clearCookie('access_token');
     res.clearCookie('refresh_token');
-    return 'Logged out successfully';
+    return {
+      message: 'Logout successful',
+      data: null,
+    };
   }
 
   async signToken(
