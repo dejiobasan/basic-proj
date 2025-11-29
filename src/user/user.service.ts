@@ -27,6 +27,12 @@ export class UserService {
                 mode: Prisma.QueryMode.insensitive,
               },
             },
+            {
+              email: {
+                contains: search,
+                mode: Prisma.QueryMode.insensitive,
+              },
+            }
           ],
         }
       : {};
@@ -38,7 +44,6 @@ export class UserService {
           firstName: true,
           lastName: true,
           email: true,
-          phoneNumber: true,
         },
         skip,
         take: limit,
