@@ -1,5 +1,5 @@
 import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsInt, IsOptional, IsString, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class GetUsersQueryDto {
@@ -18,6 +18,7 @@ export class GetUsersQueryDto {
   @Type(() => Number)
   @IsInt()
   @Min(1)
+  @Max(100)
   limit?: number = 10;
 
   @ApiPropertyOptional({ example: 'john', description: 'Search users by name' })
@@ -36,8 +37,7 @@ export class UserListItemDto {
   @ApiProperty({ example: 'john.doe@example.com' })
   email: string;
 
-  @ApiProperty({ example: '+1234567890' })
-  phoneNumber: string;
+
 }
 
 export class PaginatedUsersResponseDto {
