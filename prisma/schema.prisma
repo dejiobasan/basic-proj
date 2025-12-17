@@ -18,4 +18,56 @@ model User {
   lastName String
   phoneNumber String
   password String
+  wallets Wallet[]
+}
+
+model Wallet {
+  walletId String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  currency  String   @default("NGN")
+  balance   Decimal  @default(0) @db.Decimal(20, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sentTransactions     Transaction[] @relation("SenderWallet")
+  receivedTransactions Transaction[] @relation("ReceiverWallet")
+  fundingTransactions  Transaction[] @relation("FundedWallet")
+
+  @@unique([userId, currency])
+  @@index([userId])
+}
+
+model Transaction {
+  transactionId   String          @id @default(uuid())
+  type            TransactionType
+  amount          Decimal         @db.Decimal(20, 2)
+  currency        String          @default("NGN")
+  status          TransactionStatus @default(COMPLETED)
+  senderWalletId   String?
+  senderWallet     Wallet?   @relation("SenderWallet", fields: [senderWalletId], references: [walletId])
+  receiverWalletId String?
+  receiverWallet   Wallet?   @relation("ReceiverWallet", fields: [receiverWalletId], references: [walletId])
+  walletId         String?
+  wallet           Wallet?   @relation("FundedWallet", fields: [walletId], references: [walletId])
+  description     String?
+  idempotencyKey  String?   @unique
+  metadata        Json?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  @@index([senderWalletId])
+  @@index([receiverWalletId])
+  @@index([walletId])
+  @@index([idempotencyKey])
+}
+
+enum TransactionType {
+  FUNDING
+  TRANSFER
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
 }

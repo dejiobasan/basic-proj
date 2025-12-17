@@ -36,8 +36,6 @@ export class UserListItemDto {
 
   @ApiProperty({ example: 'john.doe@example.com' })
   email: string;
-
-
 }
 
 export class PaginatedUsersResponseDto {
