@@ -281,7 +281,14 @@ export class WalletService {
     };
   }
 
-  async getUserWalletsTransactionHistory(walletId: string) {
+  async getUserWalletsTransactionHistory(userId: string, walletId: string) {
+    const wallet = await this.prisma.wallet.findFirst({
+      where: { walletId, userId },
+    });
+    if (!wallet) {
+      throw new NotFoundException('Wallet not found');
+    }
+
     const transactions = await this.prisma.transaction.findMany({
       where: {
         walletId: walletId,

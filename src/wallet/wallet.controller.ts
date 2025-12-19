@@ -97,7 +97,14 @@ export class WalletController {
     description: 'Transactions fetched successfully',
     type: WalletResponseDto,
   })
-  async getUserWalletsTransactionHistory(@Param('walletId') walletId: string) {
-    return this.walletService.getUserWalletsTransactionHistory(walletId);
+  async getUserWalletsTransactionHistory(
+    @Req() req: Request & { user: JwtPayload },
+    @Param('walletId') walletId: string,
+  ) {
+    const userId = req.user.userId;
+    return this.walletService.getUserWalletsTransactionHistory(
+      userId,
+      walletId,
+    );
   }
 }
